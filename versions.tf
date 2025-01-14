@@ -11,12 +11,12 @@
 // limitations under the License.
 
 terraform {
-  required_version = ">= 1.5.0, <= 1.5.5"
+  required_version = "~> 1.0"
 
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~>3.67"
+      version = "~> 3.117"
     }
   }
 }
