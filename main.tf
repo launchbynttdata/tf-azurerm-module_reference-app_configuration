@@ -11,7 +11,8 @@
 // limitations under the License.
 
 module "resource_names" {
-  source = "git::https://github.com/launchbynttdata/tf-launch-module_library-resource_name.git?ref=1.0.1"
+  source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
+  version = "~> 2.0"
 
   for_each = var.resource_names_map
 
@@ -23,10 +24,12 @@ module "resource_names" {
   instance_env            = var.instance_env
   instance_resource       = var.instance_resource
   maximum_length          = each.value.max_length
+  use_azure_region_abbr   = var.use_azure_region_abbr
 }
 
 module "resource_group" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-resource_group.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm"
+  version = "~> 1.1"
 
   count = var.resource_group_name != null ? 0 : 1
 
@@ -37,7 +40,10 @@ module "resource_group" {
 }
 
 module "app_configuration" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-app_configuration.git?ref=feature!/initial-implementation"
+  # TODO
+  # source  = "terraform.registry.launch.nttdata.com/module_primitive/app_configuration/azurerm"
+  # version = "~> 1.0"
+  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-app_configuration.git?ref=1.0.0"
 
   name                = module.resource_names["app_configuration"].standard
   resource_group_name = var.resource_group_name != null ? var.resource_group_name : module.resource_group[0].name
@@ -59,7 +65,8 @@ module "app_configuration" {
 }
 
 module "private_dns_zone" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_zone.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_zone/azurerm"
+  version = "~> 1.0"
 
   count = local.enable_public_network_access ? 0 : 1
 
@@ -72,7 +79,8 @@ module "private_dns_zone" {
 }
 
 module "vnet_link" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_vnet_link.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_vnet_link/azurerm"
+  version = "~> 1.0"
 
   count = local.enable_public_network_access ? 0 : 1
 
@@ -88,7 +96,8 @@ module "vnet_link" {
 }
 
 module "additional_vnet_links" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_dns_vnet_link.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_vnet_link/azurerm"
+  version = "~> 1.0"
 
   for_each = local.enable_public_network_access ? {} : var.additional_vnet_links
 
@@ -104,7 +113,9 @@ module "additional_vnet_links" {
 }
 
 module "private_endpoint" {
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_endpoint.git?ref=1.0.0"
+  # source  = "terraform.registry.launch.nttdata.com/module_primitive/private_endpoint/azurerm"
+  # version = "~> 1.0"
+  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_endpoint.git?ref=feature/update-tooling"
 
   count = local.enable_public_network_access ? 0 : 1
 

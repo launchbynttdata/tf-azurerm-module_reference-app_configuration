@@ -121,6 +121,12 @@ variable "resource_group_name" {
   default     = null
 }
 
+variable "use_azure_region_abbr" {
+  description = "Use Azure region abbreviation in resource names"
+  type        = bool
+  default     = true
+}
+
 variable "tags" {
   description = "Custom tags for the deployment"
   type        = map(string)
