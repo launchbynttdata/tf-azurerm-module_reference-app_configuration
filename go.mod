@@ -1,6 +1,6 @@
 module github.com/launchbynttdata/tf-azurerm-module_reference-app_configuration
 
-go 1.21
+go 1.22
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.17.0

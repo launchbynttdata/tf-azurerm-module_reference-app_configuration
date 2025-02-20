@@ -40,10 +40,8 @@ module "resource_group" {
 }
 
 module "app_configuration" {
-  # TODO
-  # source  = "terraform.registry.launch.nttdata.com/module_primitive/app_configuration/azurerm"
-  # version = "~> 1.0"
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-app_configuration.git?ref=1.0.0"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/app_configuration/azurerm"
+  version = "~> 1.0"
 
   name                = module.resource_names["app_configuration"].standard
   resource_group_name = var.resource_group_name != null ? var.resource_group_name : module.resource_group[0].name
@@ -113,9 +111,8 @@ module "additional_vnet_links" {
 }
 
 module "private_endpoint" {
-  # source  = "terraform.registry.launch.nttdata.com/module_primitive/private_endpoint/azurerm"
-  # version = "~> 1.0"
-  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-private_endpoint.git?ref=feature/update-tooling"
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_endpoint/azurerm"
+  version = "~> 1.0"
 
   count = local.enable_public_network_access ? 0 : 1
 
