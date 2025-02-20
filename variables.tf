@@ -265,7 +265,7 @@ variable "features" {
 
 variable "private_dns_zone_suffix" {
   description = <<EOT
-    The DNS Zone suffix. Default is `privatelink.azconfig.io` for Public Cloud
+    The DNS Zone suffix for the azure app configuration. Default is `privatelink.azconfig.io` for Public Cloud
     For US gov cloud it should be `privatelink.azconfig.azure.us`
   EOT
   type        = string
@@ -274,7 +274,7 @@ variable "private_dns_zone_suffix" {
 
 variable "additional_vnet_links" {
   description = <<EOF
-    A map of names to VNET IDs to create links to a resource and only available
+    A map of names to VNET IDs to create links to the azure app configuration and only available
     when `public_network_access` is set to 'Disabled'
   EOF
   type        = map(string)

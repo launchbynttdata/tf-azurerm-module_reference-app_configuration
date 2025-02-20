@@ -1,3 +1,15 @@
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 # COMMON
 
 variable "resource_names_map" {
@@ -174,25 +186,7 @@ variable "identity_ids" {
   default     = null
 }
 
-// variables to configure private DNS zone
-
-variable "private_dns_zone_suffix" {
-  description = <<EOT
-    The DNS Zone suffix. Default is `privatelink.azconfig.io` for Public Cloud
-    For US gov cloud it should be `privatelink.azconfig.azure.us`
-  EOT
-  type        = string
-  default     = "privatelink.azconfig.io"
-}
-
-variable "additional_vnet_links" {
-  description = <<EOF
-    A map of names to VNET IDs to create links to a resource and only available
-    when `public_network_access` is set to 'Disabled'
-  EOF
-  type        = map(string)
-  default     = {}
-}
+# app configuration data
 
 variable "keys" {
   description = <<EOF
@@ -258,4 +252,25 @@ variable "features" {
     }))
   }))
   default = {}
+}
+
+
+# variables to configure private DNS zone
+
+variable "private_dns_zone_suffix" {
+  description = <<EOT
+    The DNS Zone suffix for the azure app configuration. Default is `privatelink.azconfig.io` for Public Cloud
+    For US gov cloud it should be `privatelink.azconfig.azure.us`
+  EOT
+  type        = string
+  default     = "privatelink.azconfig.io"
+}
+
+variable "additional_vnet_links" {
+  description = <<EOF
+    A map of names to VNET IDs to create links to the azure app configuration and only available
+    when `public_network_access` is set to 'Disabled'
+  EOF
+  type        = map(string)
+  default     = {}
 }
