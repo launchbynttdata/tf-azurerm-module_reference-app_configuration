@@ -91,6 +91,9 @@ module "app_configuration" {
 
   private_endpoint_subnet_id = module.virtual_network.subnet_map["private-endpoint-subnet"].id
 
+  keys     = var.keys
+  features = var.features
+
   tags = var.tags
 
   depends_on = [module.virtual_network]

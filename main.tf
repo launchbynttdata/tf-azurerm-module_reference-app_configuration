@@ -62,6 +62,17 @@ module "app_configuration" {
   depends_on = [module.resource_group]
 }
 
+module "app_configuration_data" {
+  # source  = "terraform.registry.launch.nttdata.com/module_primitive/app_configuration_data/azurerm"
+  # version = "~> 1.0"
+  source = "git::https://github.com/launchbynttdata/tf-azurerm-module_primitive-app_configuration_data.git?ref=feature!/initial-implementation"
+
+  configuration_store_id = module.app_configuration.app_configuration_id
+  keys                   = var.keys
+  features               = var.features
+
+}
+
 module "private_dns_zone" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_zone/azurerm"
   version = "~> 1.0"

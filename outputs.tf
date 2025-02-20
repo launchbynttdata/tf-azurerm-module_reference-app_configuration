@@ -14,6 +14,10 @@ output "app_configuration_id" {
   value = module.app_configuration.app_configuration_id
 }
 
+output "app_configuration_name" {
+  value = module.app_configuration.app_configuration_name
+}
+
 output "app_configuration_endpoint" {
   value = module.app_configuration.app_configuration_endpoint
 }
@@ -44,4 +48,12 @@ output "app_configuration_identity" {
 
 output "app_configuration_replica" {
   value = module.app_configuration.app_configuration_replica
+}
+
+output "app_configuration_keys" {
+  value = module.app_configuration_data.app_configuration_keys
+}
+
+output "app_configuration_features" {
+  value = module.app_configuration_data.app_configuration_features
 }

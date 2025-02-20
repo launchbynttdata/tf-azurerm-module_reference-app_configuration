@@ -22,3 +22,11 @@ logical_product_family  = "launch"
 logical_product_service = "appcs"
 class_env               = "gotest"
 location                = "eastus"
+
+keys = {
+  test-config-key = {
+    value = "Hello, World!"
+  }
+}
+
+features = {}
