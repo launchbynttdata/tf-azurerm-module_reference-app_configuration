@@ -10,7 +10,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-module "network_resource_names" {
+module "resource_names" {
   source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
   version = "~> 2.0"
 
@@ -35,22 +35,34 @@ module "network_resource_names" {
   maximum_length          = each.value.max_length
 }
 
-module "network_resource_group" {
+module "resource_group" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm"
   version = "~> 1.1"
 
-  name     = module.network_resource_names["resource_group"].minimal_random_suffix
+  name     = module.resource_names["resource_group"].minimal_random_suffix
   location = var.location
   tags     = var.tags
+}
+
+module "private_dns_zone" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_zone/azurerm"
+  version = "~> 1.0"
+
+  zone_name           = var.private_dns_zone_suffix
+  resource_group_name = module.resource_group.name
+
+  tags = var.tags
+
+  depends_on = [module.resource_group]
 }
 
 module "virtual_network" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/virtual_network/azurerm"
   version = "~> 3.1"
 
-  resource_group_name = module.network_resource_group.name
+  resource_group_name = module.resource_group.name
 
-  vnet_name     = module.network_resource_names["virtual_network"].minimal_random_suffix
+  vnet_name     = module.resource_names["virtual_network"].minimal_random_suffix
   vnet_location = var.location
 
   address_space = var.vnet_address_space
@@ -62,7 +74,7 @@ module "virtual_network" {
 
   tags = var.tags
 
-  depends_on = [module.network_resource_group]
+  depends_on = [module.resource_group]
 }
 
 module "app_configuration" {
@@ -86,9 +98,7 @@ module "app_configuration" {
   replicas                        = var.replicas
   soft_delete_retention_days      = var.soft_delete_retention_days
 
-  private_dns_zone_suffix = var.private_dns_zone_suffix
-  additional_vnet_links   = var.additional_vnet_links
-
+  private_dns_zone_ids       = [module.private_dns_zone.id]
   private_endpoint_subnet_id = module.virtual_network.subnet_map["private-endpoint-subnet"].id
 
   keys     = var.keys

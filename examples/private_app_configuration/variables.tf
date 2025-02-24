@@ -265,12 +265,3 @@ variable "private_dns_zone_suffix" {
   type        = string
   default     = "privatelink.azconfig.io"
 }
-
-variable "additional_vnet_links" {
-  description = <<EOF
-    A map of names to VNET IDs to create links to the azure app configuration and only available
-    when `public_network_access` is set to 'Disabled'
-  EOF
-  type        = map(string)
-  default     = {}
-}

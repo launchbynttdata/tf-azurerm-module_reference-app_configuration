@@ -72,54 +72,6 @@ module "app_configuration_data" {
 
 }
 
-module "private_dns_zone" {
-  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_zone/azurerm"
-  version = "~> 1.0"
-
-  count = local.enable_public_network_access ? 0 : 1
-
-  zone_name           = var.private_dns_zone_suffix
-  resource_group_name = var.resource_group_name != null ? var.resource_group_name : module.resource_group[0].name
-
-  tags = var.tags
-
-  depends_on = [module.resource_group]
-}
-
-module "vnet_link" {
-  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_vnet_link/azurerm"
-  version = "~> 1.0"
-
-  count = local.enable_public_network_access ? 0 : 1
-
-  link_name             = "app-configuration-private-endpoint-vnet-link"
-  resource_group_name   = var.resource_group_name != null ? var.resource_group_name : module.resource_group[0].name
-  private_dns_zone_name = module.private_dns_zone[0].zone_name
-  virtual_network_id    = join("/", slice(split("/", var.private_endpoint_subnet_id), 0, 9))
-  registration_enabled  = false
-
-  tags = var.tags
-
-  depends_on = [module.private_dns_zone, module.resource_group]
-}
-
-module "additional_vnet_links" {
-  source  = "terraform.registry.launch.nttdata.com/module_primitive/private_dns_vnet_link/azurerm"
-  version = "~> 1.0"
-
-  for_each = local.enable_public_network_access ? {} : var.additional_vnet_links
-
-  link_name             = each.key
-  resource_group_name   = var.resource_group_name != null ? var.resource_group_name : module.resource_group[0].name
-  private_dns_zone_name = module.private_dns_zone[0].zone_name
-  virtual_network_id    = each.value
-  registration_enabled  = false
-
-  tags = var.tags
-
-  depends_on = [module.private_dns_zone, module.resource_group]
-}
-
 module "private_endpoint" {
   source  = "terraform.registry.launch.nttdata.com/module_primitive/private_endpoint/azurerm"
   version = "~> 1.0"
@@ -134,10 +86,10 @@ module "private_endpoint" {
   private_connection_resource_id  = module.app_configuration.app_configuration_id
   subresource_names               = ["configurationStores"]
   subnet_id                       = var.private_endpoint_subnet_id
-  private_dns_zone_ids            = [module.private_dns_zone[0].id]
+  private_dns_zone_ids            = var.private_dns_zone_ids
   private_dns_zone_group_name     = "configurationStores"
 
   tags = merge(var.tags, { resource_name = module.resource_names["private_endpoint"].standard })
 
-  depends_on = [module.resource_group, module.app_configuration, module.private_dns_zone]
+  depends_on = [module.resource_group, module.app_configuration]
 }
