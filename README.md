@@ -105,3 +105,72 @@ If `make check` target is successful, developer is good to commit the code to pr
 - runs `conftests`. `conftests` make sure `policy` checks are successful.
 - runs `terratest`. This is integration test suit.
 - runs `opa` tests
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.117 |
+
+## Providers
+
+No providers.
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | terraform.registry.launch.nttdata.com/module_library/resource_name/launch | ~> 2.0 |
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm | ~> 1.1 |
+| <a name="module_app_configuration"></a> [app\_configuration](#module\_app\_configuration) | terraform.registry.launch.nttdata.com/module_primitive/app_configuration/azurerm | ~> 1.0 |
+| <a name="module_app_configuration_data"></a> [app\_configuration\_data](#module\_app\_configuration\_data) | terraform.registry.launch.nttdata.com/module_primitive/app_configuration_data/azurerm | ~> 1.0 |
+| <a name="module_private_endpoint"></a> [private\_endpoint](#module\_private\_endpoint) | terraform.registry.launch.nttdata.com/module_primitive/private_endpoint/azurerm | ~> 1.0 |
+
+## Resources
+
+No resources.
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br/>    name       = string<br/>    max_length = optional(number, 60)<br/>  }))</pre> | <pre>{<br/>  "app_configuration": {<br/>    "max_length": 80,<br/>    "name": "appcs"<br/>  },<br/>  "key_vault": {<br/>    "max_length": 24,<br/>    "name": "kv"<br/>  },<br/>  "private_endpoint": {<br/>    "max_length": 80,<br/>    "name": "pe"<br/>  },<br/>  "private_service_connection": {<br/>    "max_length": 80,<br/>    "name": "pesc"<br/>  },<br/>  "resource_group": {<br/>    "max_length": 80,<br/>    "name": "rg"<br/>  }<br/>}</pre> | no |
+| <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Number that represents the instance of the environment. | `number` | `0` | no |
+| <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Number that represents the instance of the resource. | `number` | `0` | no |
+| <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | (Required) Name of the product family for which the resource is created.<br/>    Example: org\_name, department\_name. | `string` | `"launch"` | no |
+| <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | (Required) Name of the product service for which the resource is created.<br/>    For example, backend, frontend, middleware etc. | `string` | `"appcs"` | no |
+| <a name="input_class_env"></a> [class\_env](#input\_class\_env) | (Required) Environment where resource is going to be deployed. For example. dev, qa, uat | `string` | `"dev"` | no |
+| <a name="input_location"></a> [location](#input\_location) | target resource group resource mask | `string` | `"eastus"` | no |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Resource group name | `string` | `null` | no |
+| <a name="input_use_azure_region_abbr"></a> [use\_azure\_region\_abbr](#input\_use\_azure\_region\_abbr) | Use Azure region abbreviation in resource names | `bool` | `true` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Custom tags for the deployment | `map(string)` | `{}` | no |
+| <a name="input_customer_managed_encryption_key"></a> [customer\_managed\_encryption\_key](#input\_customer\_managed\_encryption\_key) | The customer managed encryption key configuration<br/>    Requires a user assigned identity with read access to the desired key.<br/>    The user assigned identity must be provided in the `identity_ids` variable. | <pre>object({<br/>    key_vault_key_id   = string<br/>    identity_client_id = string<br/>  })</pre> | `null` | no |
+| <a name="input_local_auth_enabled"></a> [local\_auth\_enabled](#input\_local\_auth\_enabled) | Whether local authentication methods is enabled. | `bool` | `true` | no |
+| <a name="input_public_network_access"></a> [public\_network\_access](#input\_public\_network\_access) | Whether public network access is enabled. Possible values are 'Enabled' and 'Disabled'. | `string` | `"Enabled"` | no |
+| <a name="input_purge_protection_enabled"></a> [purge\_protection\_enabled](#input\_purge\_protection\_enabled) | Whether purge protection is enabled. | `bool` | `false` | no |
+| <a name="input_replicas"></a> [replicas](#input\_replicas) | Locations to replicate the App configuration store | `map(string)` | `null` | no |
+| <a name="input_sku"></a> [sku](#input\_sku) | The SKU of the App Configuration. Possible values are 'free' and 'standard'. | `string` | `"free"` | no |
+| <a name="input_soft_delete_retention_days"></a> [soft\_delete\_retention\_days](#input\_soft\_delete\_retention\_days) | The number of days that items should be retained for once soft-deleted. | `number` | `7` | no |
+| <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of user managed identity ids to be assigned. | `list(string)` | `null` | no |
+| <a name="input_keys"></a> [keys](#input\_keys) | map(object({<br/>      content\_type        = content type of the configuration key<br/>      label               = label (partition) of the app configuration store<br/>      value               = value of the configuration key<br/>      locked              = whether the key is locked to prevent changes<br/>      type                = type of the configuration key, `kv` or `vault` (key vault reference)<br/>      vault\_key\_reference = id of the vault secret this key refers to<br/>      tags                = custom tags to assign<br/>    })) | <pre>map(object({<br/>    content_type        = optional(string)<br/>    label               = optional(string)<br/>    value               = optional(string)<br/>    locked              = optional(bool)<br/>    type                = optional(string)<br/>    vault_key_reference = optional(string)<br/>    tags                = optional(map(string))<br/>  }))</pre> | `{}` | no |
+| <a name="input_features"></a> [features](#input\_features) | map(object({<br/>      name        = name of the feature flag<br/>      description = description of the feature<br/>      enabled     = status of the feature, defaults to false<br/>      label       = label (partition) of the app configuration store<br/>      locked      = whether the feature is locked to prevent changes<br/><br/>      targeting\_filter = optional(object({<br/>        default\_rollout\_percentage = default percentage of the user base for which to enable the feature<br/>        groups                     = map of groups and their rollout percentages (groups defined in the application logic)<br/>        users                      = list of users to target (users defined in the application logic)<br/>      }))<br/><br/>      timewindow\_filter = optional(object({<br/>        start = the earliest timestamp the feature is enabled, RFC3339 format<br/>        end   = the latest timestamp the feature is enabled, RFC3339 format<br/>      }))<br/>    })) | <pre>map(object({<br/>    name        = string<br/>    description = optional(string)<br/>    enabled     = optional(bool)<br/>    label       = optional(string)<br/>    locked      = optional(bool)<br/><br/>    targeting_filter = optional(object({<br/>      default_rollout_percentage = number<br/>      groups                     = optional(map(number))<br/>      users                      = optional(list(string))<br/>    }))<br/><br/>    timewindow_filter = optional(object({<br/>      start = optional(string)<br/>      end   = optional(string)<br/>    }))<br/>  }))</pre> | `{}` | no |
+| <a name="input_private_dns_zone_ids"></a> [private\_dns\_zone\_ids](#input\_private\_dns\_zone\_ids) | A list of private DNS zone IDs to link to the azure app configuration and only available<br/>    when `public_network_access` is set to 'Disabled' | `list(string)` | `[]` | no |
+| <a name="input_private_endpoint_subnet_id"></a> [private\_endpoint\_subnet\_id](#input\_private\_endpoint\_subnet\_id) | ID of the subnet where the private endpoint should be deployed<br/>    Required when `public_network_access` is set to 'Disabled' | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_app_configuration_id"></a> [app\_configuration\_id](#output\_app\_configuration\_id) | n/a |
+| <a name="output_app_configuration_name"></a> [app\_configuration\_name](#output\_app\_configuration\_name) | n/a |
+| <a name="output_app_configuration_endpoint"></a> [app\_configuration\_endpoint](#output\_app\_configuration\_endpoint) | n/a |
+| <a name="output_app_configuration_primary_read_key"></a> [app\_configuration\_primary\_read\_key](#output\_app\_configuration\_primary\_read\_key) | n/a |
+| <a name="output_app_configuration_primary_write_key"></a> [app\_configuration\_primary\_write\_key](#output\_app\_configuration\_primary\_write\_key) | n/a |
+| <a name="output_app_configuration_secondary_read_key"></a> [app\_configuration\_secondary\_read\_key](#output\_app\_configuration\_secondary\_read\_key) | n/a |
+| <a name="output_app_configuration_secondary_write_key"></a> [app\_configuration\_secondary\_write\_key](#output\_app\_configuration\_secondary\_write\_key) | n/a |
+| <a name="output_app_configuration_identity"></a> [app\_configuration\_identity](#output\_app\_configuration\_identity) | n/a |
+| <a name="output_app_configuration_replica"></a> [app\_configuration\_replica](#output\_app\_configuration\_replica) | n/a |
+| <a name="output_app_configuration_keys"></a> [app\_configuration\_keys](#output\_app\_configuration\_keys) | n/a |
+| <a name="output_app_configuration_features"></a> [app\_configuration\_features](#output\_app\_configuration\_features) | n/a |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
