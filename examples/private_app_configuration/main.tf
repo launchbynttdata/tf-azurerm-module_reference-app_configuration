@@ -10,6 +10,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+data "azurerm_client_config" "current" {}
+
 module "resource_names" {
   source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
   version = "~> 2.0"
@@ -101,10 +103,38 @@ module "app_configuration" {
   private_dns_zone_ids       = [module.private_dns_zone.id]
   private_endpoint_subnet_id = module.virtual_network.subnet_map["private-endpoint-subnet"].id
 
-  keys     = var.keys
-  features = var.features
+  keys     = {}
+  features = {}
 
   tags = var.tags
 
   depends_on = [module.virtual_network]
+}
+
+module "app_configuration_data_owner" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/role_assignment/azurerm"
+  version = "~> 1.0"
+
+  scope                = module.app_configuration.app_configuration_id
+  principal_id         = data.azurerm_client_config.current.object_id
+  role_definition_name = "App Configuration Data Owner"
+
+  depends_on = [module.app_configuration]
+}
+
+resource "time_sleep" "wait_for_data_plane_rbac" {
+  create_duration = "60s"
+
+  depends_on = [module.app_configuration_data_owner]
+}
+
+module "app_configuration_data" {
+  source  = "terraform.registry.launch.nttdata.com/module_primitive/app_configuration_data/azurerm"
+  version = "~> 1.0"
+
+  configuration_store_id = module.app_configuration.app_configuration_id
+  keys                   = var.keys
+  features               = var.features
+
+  depends_on = [time_sleep.wait_for_data_plane_rbac]
 }

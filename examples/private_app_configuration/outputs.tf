@@ -15,5 +15,5 @@ output "app_configuration_id" {
 }
 
 output "app_configuration_keys" {
-  value = module.app_configuration.app_configuration_keys
+  value = module.app_configuration_data.app_configuration_keys
 }

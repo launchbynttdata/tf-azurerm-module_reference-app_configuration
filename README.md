@@ -105,11 +105,11 @@ If `make check` target is successful, developer is good to commit the code to pr
 - runs `conftests`. `conftests` make sure `policy` checks are successful.
 - runs `terratest`. This is integration test suit.
 - runs `opa` tests
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.117 |
 
@@ -120,7 +120,7 @@ No providers.
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_resource_names"></a> [resource\_names](#module\_resource\_names) | terraform.registry.launch.nttdata.com/module_library/resource_name/launch | ~> 2.0 |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform.registry.launch.nttdata.com/module_primitive/resource_group/azurerm | ~> 1.1 |
 | <a name="module_app_configuration"></a> [app\_configuration](#module\_app\_configuration) | terraform.registry.launch.nttdata.com/module_primitive/app_configuration/azurerm | ~> 1.0 |
@@ -134,7 +134,7 @@ No resources.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_resource_names_map"></a> [resource\_names\_map](#input\_resource\_names\_map) | A map of key to resource\_name that will be used by tf-launch-module\_library-resource\_name to generate resource names | <pre>map(object({<br/>    name       = string<br/>    max_length = optional(number, 60)<br/>  }))</pre> | <pre>{<br/>  "app_configuration": {<br/>    "max_length": 80,<br/>    "name": "appcs"<br/>  },<br/>  "key_vault": {<br/>    "max_length": 24,<br/>    "name": "kv"<br/>  },<br/>  "private_endpoint": {<br/>    "max_length": 80,<br/>    "name": "pe"<br/>  },<br/>  "private_service_connection": {<br/>    "max_length": 80,<br/>    "name": "pesc"<br/>  },<br/>  "resource_group": {<br/>    "max_length": 80,<br/>    "name": "rg"<br/>  }<br/>}</pre> | no |
 | <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Number that represents the instance of the environment. | `number` | `0` | no |
 | <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Number that represents the instance of the resource. | `number` | `0` | no |
@@ -161,7 +161,7 @@ No resources.
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_app_configuration_id"></a> [app\_configuration\_id](#output\_app\_configuration\_id) | n/a |
 | <a name="output_app_configuration_name"></a> [app\_configuration\_name](#output\_app\_configuration\_name) | n/a |
 | <a name="output_app_configuration_endpoint"></a> [app\_configuration\_endpoint](#output\_app\_configuration\_endpoint) | n/a |
@@ -173,4 +173,4 @@ No resources.
 | <a name="output_app_configuration_replica"></a> [app\_configuration\_replica](#output\_app\_configuration\_replica) | n/a |
 | <a name="output_app_configuration_keys"></a> [app\_configuration\_keys](#output\_app\_configuration\_keys) | n/a |
 | <a name="output_app_configuration_features"></a> [app\_configuration\_features](#output\_app\_configuration\_features) | n/a |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- END_TF_DOCS -->
