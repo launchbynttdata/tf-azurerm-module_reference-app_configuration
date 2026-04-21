@@ -83,6 +83,7 @@ module "app_configuration" {
   source = "../../"
 
   resource_names_map      = var.resource_names_map
+  resource_group_name     = module.resource_group.name
   logical_product_family  = var.logical_product_family
   logical_product_service = var.logical_product_service
   location                = var.location
