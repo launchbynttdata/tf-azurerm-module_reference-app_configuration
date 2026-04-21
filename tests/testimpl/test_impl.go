@@ -56,7 +56,9 @@ func TestAppConfiguration(t *testing.T, ctx types.TestContext) {
 		if err != nil {
 			t.Fatalf("failed to finish the request: %v", err)
 		}
-		assert.Equal(t, "Hello, World!", keyValue)
+		assert.NotNil(t, keyValue.Properties)
+		assert.NotNil(t, keyValue.Properties.Value)
+		assert.Equal(t, "Hello, World!", *keyValue.Properties.Value)
 	})
 
 }
