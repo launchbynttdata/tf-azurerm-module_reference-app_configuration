@@ -22,6 +22,7 @@ logical_product_family  = "launch"
 logical_product_service = "appcs"
 class_env               = "gotest"
 location                = "eastus"
+public_network_access   = "Enabled"
 
 keys = {
   test-config-key = {
